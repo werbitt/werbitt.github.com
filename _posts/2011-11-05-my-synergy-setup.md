@@ -19,7 +19,7 @@ Install synergy on both the laptop and the mini.
 Configure Synergy
 --------------------------------------------------------------------------------
 
-Synergy can be configured via .synergy.conf file in your home directory, see the [documentation][5]. The configuration file needs to be on the Synergy Server, the one with the keyboard you want to use. Here's an example of a .synergy.conf that allows you to switch between screens using a keystroke instead of window edges.
+Synergy can be configured via a .synergy.conf file in the home directory on the laptop. Here's an example of a .synergy.conf that allows you to switch between screens using a keystroke instead of window edges. See the [documentation][5] for more options.
 
     section: screens
       laptop.local:
