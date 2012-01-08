@@ -1,15 +1,18 @@
-How I Control My Mac Mini From My Laptop
+Control This
 ================================================================================
 
-When I'm in my living room, watching TV on my Mac mini, while doing work on my laptop, rather than having to reach for a mouse or keyboard, I like to control the mini using my laptop. In this post I'm going to describe the setup I'm currently using. I use Macs at home, so this description is going to be Mac centric, but it should be adaptable to other OS's.
 
-The open source software that makes this easy is a command line tool called [Synergy][1]. There are several GUI wrappers that rely on Synergy for their core functionality, such as [QuickSynergy][2]. Synergy is designed to allow you to seamlessly move your mouse from th edge of one desktop to another. What I'm really interested in is using a keyboard shortcut to switch between desktops. None of the GUI applications I tried provided for this functionality. I was able to come up with a solution by properly configuring the Synergy command line tool. Here are the steps I took.
+I'd like to quickly document the way I'm using [Synergy][1] to control my HTPC using my laptop.
+
+I'm not a big fan of [Synergy's][1] default method of using a screen edge to move between desktops.  It's important to me that I can switch control between PCs using a keystroke. 
+
+My current setup is a Macbook Air and a Mac Mini HTPC, so this will be a Mac-centric post. Since [Synergy][1] is cross platform this should work with any setup with small adjustments.
 
 
 Install Synergy
 --------------------------------------------------------------------------------
 
-The first step is to install Synergy. My preferred method is to use [Homebrew][3], but you can check the [Synergy Documentation][4] to explore other options. If you decide to use Homebrew, all you need to do is type the following at the command line (assuming you've installed Homebrew).
+The first step is to install Synergy. My preferred method is to use [Homebrew][2], but you can check the [Synergy Documentation][3] to explore other options. If you decide to use Homebrew, all you need to do is type the following at the command line (assuming you've installed Homebrew).
 
     brew install synergy
 
@@ -19,7 +22,7 @@ Install synergy on both the laptop and the mini.
 Configure Synergy
 --------------------------------------------------------------------------------
 
-Synergy can be configured via a .synergy.conf file in the home directory on the laptop. Here's an example of a .synergy.conf that allows you to switch between screens using a keystroke instead of window edges. See the [documentation][5] for more options.
+Synergy can be configured via a .synergy.conf file in the home directory on the laptop. Here's an example of a .synergy.conf that allows you to switch between screens using a keystroke instead of window edges. See the [documentation][4] for more options.
 
     section: screens
       laptop.local:
@@ -63,11 +66,78 @@ The second keyboard shortcut is really just for convenience. Pressing Command+Co
 Running Synergy Automatically
 --------------------------------------------------------------------------------
 
-The next step is to set up both computers to run Synergy on startup. On a Mac this is done with [launchd][6].
+The next step is to set up both computers to run Synergy on startup. On a Mac this is done with [launchd][5].
+
+We need to create a net.sourceforge.synergy.plist file on both the laptop and the Mac mini in the ~/Library/LaunchAgents directory
+
+On the laptop:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>OnDemand</key>
+      <false/>
+      <key>KeepAlive</key>
+      <false/>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>Label</key>
+      <string>net.sourceforge.synergy.plist</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>/usr/local/bin/synergys</string>
+        <string>--no-daemon</string>
+        <string>--no-restart</string>
+        <string>--name</string>
+        <string>laptop.local</string>
+        <string>--debug</string>
+        <string>WARNING</string>
+      </array>
+      <key>ServiceDescription</key>
+      <string>Synergy Server</string>
+    </dict>
+    </plist>
+
+
+On the Mac mini:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>OnDemand</key>
+      <false/>
+      <key>KeepAlive</key>
+      <false/>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>Label</key>
+      <string>net.sourceforge.synergy.plist</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>/usr/local/bin/synergyc</string>
+        <string>--no-daemon</string>
+        <string>--no-restart</string>
+        <string>--name</string>
+        <string>mini.local</string>
+        <string>--debug</string>
+        <string>WARNING</string>
+        <string>laptop.local</string>
+      </array>
+      <key>ServiceDescription</key>
+      <string>Synergy Client</string>
+    </dict>
+    </plist>
+
+Lastly, on both the laptap and the mini navigate to the ~/Library/LaunchAgents directory in Terminal and enter the following:
+
+    launchctl load net.sourceforge.synergy.plist
+
+That's it, now we can use the laptop to control the HTPC and switch back and forth using a single keystroke.
 
 [1]: http://synergy-foss.org/
-[2]: htte://code.google.com/p/quicksynergy/
-[3]: http://mxcl.github.com/homebrew/
-[4]: http://synergy-foss.org/tracker/projects/synergy/wiki/Docs
-[5]: http://synergy2.sourceforge.net/configuration.html
-[6]: http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man8/launchd.8.html
+[2]: http://mxcl.github.com/homebrew/
+[3]: http://synergy-foss.org/tracker/projects/synergy/wiki/Docs
+[4]: http://synergy2.sourceforge.net/configuration.html
+[5]: http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man8/launchd.8.html
