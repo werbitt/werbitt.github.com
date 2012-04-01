@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" href="/css/normalize.css" type="text/css" />
+    <link rel="stylesheet" href="/css/screen.css" type="text/css" />
+  </head>
+  <body>
+    <div class="site">
+      <header>
+        <div class="name">
+           <a href="/">Micah Werbitt</a>
+        </div>
+        {% if page.id %}
+          <nav>
+            <a href="/">Posts</a>
+          </nav>
+        {% endif %}
+      </header>
+      <div class="content">
+        {{content}}
+      </div>
+    </div>
+  </body>
+</html>
