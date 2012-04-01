@@ -1,12 +1,17 @@
-Control This
+---
+layout: default
+title: Synergy Setup
+---
+
+My Synergy Setup
 ================================================================================
 
 
-I'd like to quickly document the way I'm using [Synergy][1] to control my HTPC using my laptop.
+I'd like to quickly document the way I'm using [Synergy][1] to control my home theatre computer from my laptop.
 
-I'm not a big fan of [Synergy's][1] default method of using a screen edge to move between desktops.  It's important to me that I can switch control between PCs using a keystroke. 
+I'm not a big fan of [Synergy's][1] default method of using a screen edge to move between desktops.  I like to use a keystroke to switch between desktops.
 
-My current setup is a Macbook Air and a Mac Mini HTPC, so this will be a Mac-centric post. Since [Synergy][1] is cross platform this should work with any setup with small adjustments.
+My current setup is a Macbook Air on the couch and a Mac Mini hooked up to my TV, so this will be a Mac-centric post. But, since [Synergy][1] is cross platform this should work with any setup with small adjustments.
 
 
 Install Synergy
