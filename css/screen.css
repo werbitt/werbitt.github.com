@@ -44,13 +44,16 @@ pre {
 }
 
 header {
+  height: 1em;
   line-height: 1em;
+  clear: both;
 }
 
 header .name {
   display: inline;
   font-family: helvetica, arial, san-serif;
   font-size: 1em;
+  float: left;
 }
 
 header .name a {
