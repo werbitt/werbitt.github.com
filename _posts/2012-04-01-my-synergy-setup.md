@@ -19,7 +19,9 @@ Install Synergy
 
 The first step is to install Synergy. My preferred method is to use [Homebrew][2], but you can check the [Synergy Documentation][3] to explore other options. If you decide to use Homebrew, all you need to do is type the following at the command line (assuming you've installed Homebrew).
 
-    brew install synergy
+{% highlight sh %}
+brew install synergy
+{% endhighlight %}
 
 Install synergy on both the laptop and the mini.
 
@@ -29,37 +31,43 @@ Configure Synergy
 
 Synergy can be configured via a .synergy.conf file in the home directory on the laptop. Here's an example of a .synergy.conf that allows you to switch between screens using a keystroke instead of window edges. See the [documentation][4] for more options.
 
-    section: screens
-      laptop.local:
-      mini.local:
-    end
+{% highlight sh %}
+section: screens
+  laptop.local:
+  mini.local:
+end
 
-    section: links
-      laptop.local:
-        right = mini.local
-      mini.local:
-        right = laptop.local
-    end
+section: links
+  laptop.local:
+    right = mini.local
+  mini.local:
+    right = laptop.local
+end
 
-    section: options
-      switchCorners = all
-      switchCornerSize = 9999
-      keystroke(alt+control+m) = switchInDirection(right), lockCursorToScreen(on)
-      keystroke(alt+control+Space) = keystroke(Space, mini.local)
-    end
+section: options
+  switchCorners = all
+  switchCornerSize = 9999
+  keystroke(alt+control+m) = switchInDirection(right), lockCursorToScreen(on)
+  keystroke(alt+control+Space) = keystroke(Space, mini.local)
+end
+{% endhighlight %}
 
 The configuration file is split into three sections: *screens*, *links*, and *options*. 
 
 The *screens* section is where you declare the hostnames of all of your computers followed by a colon. The *links* section is used to establish the screen edges that act as portals between your various desktops. It's necessary to establish these relationships even though we'll be using a keystroke to switch screens. The *options* section is where I get Synergy to behave exaclty the way I want. I'll explain my settings here.
 
-    switchCorners = all
-    switchCornerSize = 9999
+{% highlight sh %}
+switchCorners = all
+switchCornerSize = 9999
+{% endhighlight %}
 
 The switchCorner option is used to prevent screen switching when your mouse is in a given corner. In the *links* section we set the right side of both screens to act as the portal to the other desktop. By setting the swithCornerSize to be greater than half the screen height, we've effictevly blocked off the entire edge, so the first part of our goal is achieved.
 
 
-    keystroke(alt+control+m) = switchInDirection(right), lockCursorToScreen(on)
-    keystroke(alt+control+Space) = keystroke(Space, mini.local)
+{% highlight sh %}
+keystroke(alt+control+m) = switchInDirection(right), lockCursorToScreen(on)
+keystroke(alt+control+Space) = keystroke(Space, mini.local)
+{% endhighlight %}
 
 Here I'm defining some keyboard shortcuts that are available globally when Synergy is running. Somewhat unexpectedly, on a Mac, 'alt' is equal to the Command key. 
 
@@ -77,67 +85,72 @@ We need to create a net.sourceforge.synergy.plist file on both the laptop and th
 
 On the laptop:
 
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-    <dict>
-      <key>OnDemand</key>
-      <false/>
-      <key>KeepAlive</key>
-      <false/>
-      <key>RunAtLoad</key>
-      <true/>
-      <key>Label</key>
-      <string>net.sourceforge.synergy.plist</string>
-      <key>ProgramArguments</key>
-      <array>
-        <string>/usr/local/bin/synergys</string>
-        <string>--no-daemon</string>
-        <string>--no-restart</string>
-        <string>--name</string>
-        <string>laptop.local</string>
-        <string>--debug</string>
-        <string>WARNING</string>
-      </array>
-      <key>ServiceDescription</key>
-      <string>Synergy Server</string>
-    </dict>
-    </plist>
-
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>OnDemand</key>
+  <false/>
+  <key>KeepAlive</key>
+  <false/>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>Label</key>
+  <string>net.sourceforge.synergy.plist</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/bin/synergys</string>
+    <string>--no-daemon</string>
+    <string>--no-restart</string>
+    <string>--name</string>
+    <string>laptop.local</string>
+    <string>--debug</string>
+    <string>WARNING</string>
+  </array>
+  <key>ServiceDescription</key>
+  <string>Synergy Server</string>
+</dict>
+</plist>
+{% endhighlight %}
 
 On the Mac mini:
 
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-    <dict>
-      <key>OnDemand</key>
-      <false/>
-      <key>KeepAlive</key>
-      <false/>
-      <key>RunAtLoad</key>
-      <true/>
-      <key>Label</key>
-      <string>net.sourceforge.synergy.plist</string>
-      <key>ProgramArguments</key>
-      <array>
-        <string>/usr/local/bin/synergyc</string>
-        <string>--no-daemon</string>
-        <string>--no-restart</string>
-        <string>--name</string>
-        <string>mini.local</string>
-        <string>--debug</string>
-        <string>WARNING</string>
-        <string>laptop.local</string>
-      </array>
-      <key>ServiceDescription</key>
-      <string>Synergy Client</string>
-    </dict>
-    </plist>
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>OnDemand</key>
+  <false/>
+  <key>KeepAlive</key>
+  <false/>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>Label</key>
+  <string>net.sourceforge.synergy.plist</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/bin/synergyc</string>
+    <string>--no-daemon</string>
+    <string>--no-restart</string>
+    <string>--name</string>
+    <string>mini.local</string>
+    <string>--debug</string>
+    <string>WARNING</string>
+    <string>laptop.local</string>
+  </array>
+  <key>ServiceDescription</key>
+  <string>Synergy Client</string>
+</dict>
+</plist>
+{% endhighlight %}
 
 Lastly, on both the laptap and the mini navigate to the ~/Library/LaunchAgents directory in Terminal and enter the following:
 
-    launchctl load net.sourceforge.synergy.plist
+{% highlight sh %}
+launchctl load net.sourceforge.synergy.plist
+{% endhighlight %}
 
 That's it, now we can use the laptop to control the HTPC and switch back and forth using a single keystroke.
 
