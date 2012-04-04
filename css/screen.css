@@ -6,7 +6,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: helvetica, arial, san-serif;
-  font-size: 1.2em;
+  font-size: 1.5em;
   font-weight: normal;
   margin-top: 2em;
 }
@@ -25,9 +25,9 @@ a {
 }
 
 .site {
-  font-size: 130%;
-  line-height: 1.5em;
-  width: 30em;
+  font-size: 125%;
+  line-height: 1.6em;
+  width: 35em;
   margin: auto;
   padding: 1em .5em .5em;
 }
